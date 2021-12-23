@@ -850,8 +850,9 @@ export const mutations = {
 
 export const actions = {
   async addShop({ commit }, form) {
+    console.log(window.location)
     const { result, status } = await this.$axios.$get(
-      "http://localhost:3000/placeDetail",
+      `${window.location.origin}/placeDetail`,
       {
         params: {
           place_id: form.id,
