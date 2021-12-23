@@ -91,3 +91,6 @@ sw.*
 
 # firebase
 .firebase
+
+# env
+.env
