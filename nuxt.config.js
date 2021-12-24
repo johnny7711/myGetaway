@@ -48,14 +48,6 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    proxy: true
-  },
-  
-  proxy: {
-    '/placeDetail': {
-      target: 'https://maps.googleapis.com/maps/api/place/details/json',
-      pathRewrite: {'^/placeDetail': ''}
-    }
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
