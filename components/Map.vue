@@ -107,7 +107,6 @@
       </v-btn>
       <TheFilter
         :toggle.sync="filterToggle"
-        @changeQuery="swiperChange"
         :permanent="isWeb"
       />
       <TheMenu :toggle.sync="menuToggle" :permanent="isWeb" />
@@ -175,28 +174,25 @@ export default {
         console.log(position.lng());
       });
     },
-    swiperChange(index) {
-      this.$refs.shopList.slideShop(index);
-    },
     async searchArea() {
       if (this.area) {
-        const {
-          results: [
-            {
-              geometry: { location },
-            },
-          ],
-        } = await this.$axios.$get(
-          "https://maps.googleapis.com/maps/api/geocode/json",
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode(
           {
-            params: {
-              address: this.area,
-              region: "jp",
-              key: this.$config.googleApiKey,
-            },
+            address: this.area,
+            region: "jp",
+          },
+          (results, status) => {
+            if (status == google.maps.GeocoderStatus.OK) {
+              this.$store.commit('map/setCenter', {
+                lat: results[0].geometry.location.lat(),
+                lng: results[0].geometry.location.lng()
+              })
+            } else {
+              console.log("NG");
+            }
           }
         );
-        this.$store.commit("map/setCenter", location);
       }
     },
   },

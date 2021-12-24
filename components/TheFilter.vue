@@ -110,7 +110,6 @@
 
 <script>
 export default {
-  emits: ["changeQuery"],
   props: {
     toggle: {
       type: Boolean,

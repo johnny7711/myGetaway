@@ -849,62 +849,6 @@ export const mutations = {
 };
 
 export const actions = {
-  async addShop({ commit }, form) {
-    console.log(window.location)
-    const { result, status } = await this.$axios.$get(
-      `${window.location.origin}/placeDetail`,
-      {
-        params: {
-          place_id: form.id,
-          fields: "all",
-          key: this.$config.googleApiKey
-        }
-      }
-    );
-    if (status == "OK") {
-      console.log(result);
-      const week = _.groupBy(result.opening_hours.periods, res => res.open.day);
-      const shopObj = {
-        id: result.place_id,
-        name: result.name,
-        address: result.formatted_address,
-        position: result.geometry.location,
-        budget: result.price_level,
-        phone: result.formatted_phone_number,
-        open: week,
-        createdBy: "Johnny",
-        lovers: [
-          {
-            name: "Johnny",
-            avatar: "/avatar/avatar-3.jpg"
-          }
-        ],
-        website: "website" in result ? result.website : result.url,
-        tags: form.tags,
-        comments: form.comment
-          ? [
-              {
-                name: "Johnny",
-                avatar: "/avatar/avatar-4.jpg",
-                comment: form.comment
-              }
-            ]
-          : [],
-        photos: [
-          {
-            _id: new Date().toISOString(),
-            src: "https://picsum.photos/500/300?image=15",
-            createdBy: "Johnny"
-          }
-        ]
-      };
-      commit("addShop", shopObj);
-      commit("addMyLists", shopObj);
-      this.$router.push("/users/0000");
-    } else {
-      console.log("NG");
-    }
-  },
   removeCheckLists({ state, commit }, id) {
     const index = state.checkLists.findIndex(shop => shop.id == id);
     commit("removeCheckLists", index);
