@@ -195,6 +195,8 @@ export default {
         this.$refs.searchMap.$mapObject
       );
     });
+    this.$store.dispatch('firestore/getShop')
+    this.$store.dispatch('firestore/createShop', 123)
   },
   data() {
     return {
@@ -366,7 +368,7 @@ export default {
         {
           placeId: shop.place_id,
         },
-        (place, status) => {
+        async (place, status) => {
           if (status == google.maps.places.PlacesServiceStatus.OK) {
             const week = _.groupBy(
               place.opening_hours.periods,
@@ -380,36 +382,16 @@ export default {
               budget: place.price_level,
               phone: place.formatted_phone_number,
               open: week,
-              createdBy: "Johnny",
-              lovers: [
-                {
-                  name: "Johnny",
-                  avatar: "/avatar/avatar-3.jpg",
-                },
-              ],
               website: "website" in place ? place.website : place.url,
               tags: this.tags,
-              comments: this.comment
-                ? [
-                    {
-                      name: "Johnny",
-                      avatar: "/avatar/avatar-4.jpg",
-                      comment: this.comment,
-                    },
-                  ]
-                : [],
-              photos: [
-                {
-                  _id: new Date().toISOString(),
-                  src: "https://picsum.photos/500/300?image=15",
-                  createdBy: "Johnny",
-                },
-              ],
+              comment: this.comment
             };
-            this.$store.commit("shop/addShop", shopObj);
-            this.$store.commit("shop/addMyLists", shopObj);
-            this.$store.commit("shop/setTags", this.newTags);
-            this.$router.push("/users/0000");
+            await this.$store.dispatch("firestore/createShop", shopObj)
+            await this.$store.dispatch("storage/savePhoto", {shopId: shopObj.id, files: this.dt.files})
+            // this.$store.commit("shop/addShop", shopObj);
+            // this.$store.commit("shop/addMyLists", shopObj);
+            // this.$store.commit("shop/setTags", this.newTags);
+            // this.$router.push("/users/0000");
           } else {
             console.log("NG");
           }

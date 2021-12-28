@@ -4,6 +4,10 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
+  server: {
+    host: '192.168.3.29'
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'myGetaway',
@@ -31,6 +35,8 @@ export default {
     {src: '~/plugins/vue2-google-maps.js'},
     {src: '~/plugins/lodash.js'},
     {src: '~/plugins/vue-infinite-loading.js', mode: 'client'},
+    {src: '~/plugins/firebase.js', mode: 'client'},
+    {src: '~/plugins/firebase.auth.js'}
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -44,10 +50,15 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
+    ['@nuxtjs/dotenv',{filename: `.env_${process.env.NODE_ENV}`}],
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
+  },
+
+  router: {
+    middleware: 'auth'
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -89,8 +100,7 @@ export default {
   build: {
   },
 
-  // env
-  publicRuntimeConfig: {
-    googleApiKey: process.env.googleApiKey || process.env.GOOGLE_API_KEY
+  env: {
+    NODE_ENV: process.env.NODE_ENV,
   }
 }

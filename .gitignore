@@ -93,4 +93,4 @@ sw.*
 .firebase
 
 # env
-.env
+.env*
