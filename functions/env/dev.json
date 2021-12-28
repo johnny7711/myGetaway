@@ -1,0 +1,14 @@
+{
+  "annict": {
+    "token": "xxx"
+  },
+  "amazon": {
+    "access": "xxx",
+    "secret": "xxx"
+  },
+  "algolia": {
+    "indexprefix": "dev_",
+    "id": "xxx",
+    "key": "xxx"
+  }
+}
